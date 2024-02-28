@@ -23,7 +23,7 @@ public class ServiceBirthday {
     @Column(name = "service_id")
     private int serviceId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     private Location location;

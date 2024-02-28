@@ -3,22 +3,34 @@ package com.swp.birthdaybooking.services;
 import com.cloudinary.Cloudinary;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.entities.Package;
+import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.exception.FileUploadException;
+import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
+import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.repositories.PackageRepository;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PackageService {
     private final PackageRepository packageRepository;
-    private final Cloudinary cloudinary;
+    private final Cloudinary cloudinary; 
+    private final Logger logger = LoggerFactory.getLogger(PackageService.class);
+
 
     public PackageService(PackageRepository packageRepository, Cloudinary cloudinary) {
         this.packageRepository = packageRepository;
@@ -27,12 +39,22 @@ public class PackageService {
 
     public ResponseEntity<ResponseObject> getParitiesOption() {
         try {
+            List<ServiceOfPackageObj> list = new ArrayList<>();
             var parties = packageRepository.getPartiesOption();
-            if (parties.isEmpty()) {
+            if(parties.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject("failed", "Couldn't find parties option", parties));
             }
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Successful", "Found parties option", parties));
-        } catch (Exception e) {
+            for (ServiceOfPackage element :parties) {
+                ServiceOfPackageObj response = ServiceOfPackageObj.builder()
+                        .serviceOfPackageId(element.getServiceOfPackageId())
+                        .serviceBirthday(element.getServiceBirthday())
+                        .servicePackage(element.getServicePackage())
+                        .build();
+                list.add(response);
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Successful", "Found parties option", list));
+        } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject("failed", "Couldn't find parties option", null));
         }
 

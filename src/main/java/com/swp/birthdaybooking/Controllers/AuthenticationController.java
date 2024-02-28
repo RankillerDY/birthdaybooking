@@ -30,5 +30,5 @@ public class AuthenticationController {
     ) {
         return services.login(request);
     }
-    
+
 }
