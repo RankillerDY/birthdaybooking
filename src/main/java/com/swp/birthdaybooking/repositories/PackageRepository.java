@@ -19,4 +19,5 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
     where pack.status = true and sb.status = true
 """)
     public List<ServiceOfPackage> getPartiesOption();
+
 }

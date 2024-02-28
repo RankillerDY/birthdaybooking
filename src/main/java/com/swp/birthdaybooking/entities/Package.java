@@ -1,6 +1,7 @@
 package com.swp.birthdaybooking.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class Package {
     @Column(name = "package_id")
     private int packageId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     private Location location;
@@ -33,6 +34,7 @@ public class Package {
     private List<Cart> cartList;
 
     @OneToMany(mappedBy = "servicePackage", fetch = FetchType.LAZY)
+    @JsonIgnore
     @JsonManagedReference
     private List<ServiceOfPackage> serviceOfPackageList;
 
