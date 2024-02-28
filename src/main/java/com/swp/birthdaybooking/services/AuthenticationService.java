@@ -4,10 +4,12 @@ import com.swp.birthdaybooking.Dtos.Request.LoginRequest;
 import com.swp.birthdaybooking.Dtos.Request.RegisterRequest;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.entities.Account;
+import com.swp.birthdaybooking.entities.Location;
 import com.swp.birthdaybooking.entities.Tokens;
 import com.swp.birthdaybooking.enums.Role;
 import com.swp.birthdaybooking.enums.TokenType;
 import com.swp.birthdaybooking.repositories.AccountRepository;
+import com.swp.birthdaybooking.repositories.LocationRepository;
 import com.swp.birthdaybooking.repositories.TokensRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final TokensRepository tokensRepo;
+    private final LocationRepository locationRepository;
     private final AccountRepository accountRepository;
 
     public ResponseEntity<ResponseObject> register(RegisterRequest dto) {
@@ -45,6 +48,8 @@ public class AuthenticationService {
                     .role(Role.USER)
                     .status(true)
                     .build();
+
+
             var savedUser = accountRepository.save(account);
             var jwtToken = jwtService.generateToken(account);
             SavedUserToken(jwtToken, savedUser);
