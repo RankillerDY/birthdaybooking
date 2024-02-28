@@ -1,27 +1,88 @@
 package com.swp.birthdaybooking.services;
 
+import com.cloudinary.Cloudinary;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
+import com.swp.birthdaybooking.entities.Package;
+import com.swp.birthdaybooking.exception.FileUploadException;
 import com.swp.birthdaybooking.repositories.PackageRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class PackageService {
     private final PackageRepository packageRepository;
+    private final Cloudinary cloudinary;
+
+    public PackageService(PackageRepository packageRepository, Cloudinary cloudinary) {
+        this.packageRepository = packageRepository;
+        this.cloudinary = cloudinary;
+    }
 
     public ResponseEntity<ResponseObject> getParitiesOption() {
         try {
             var parties = packageRepository.getPartiesOption();
-            if(parties.isEmpty()) {
+            if (parties.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject("failed", "Couldn't find parties option", parties));
             }
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Successful", "Found parties option", parties));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject("failed", "Couldn't find parties option", null));
         }
 
     }
+
+    /**
+     * P2 usecase 1 :
+     * Tạo và quản lý danh sách bữa tiệc của mình bằng cách cung cấp các chi tiết như thông tin địa điểm,
+     * ngày tổ chức, chủ đề bữa tiệc và các tùy chọn gói.
+     */
+    public List<Package> getPackages() {
+        return packageRepository.findAll();
+    }
+
+    public Optional<Package> getPackageById(int id) {
+        return packageRepository.findById(id);
+    }
+
+    public Package createPackage(Package aPackage) {
+        return packageRepository.save(aPackage);
+    }
+
+    public Package updatePackage(int id, Package aPackage) {
+        var packageOptional = packageRepository.findById(id);
+        if (packageOptional.isEmpty()) {
+            return null;
+        }
+        aPackage.setPackageId(id);
+        return packageRepository.save(aPackage);
+    }
+
+    public void deletePackage(int id) {
+        var packageOptional = packageRepository.findById(id);
+        if (packageOptional.isPresent()) {
+            packageRepository.deleteById(id);
+        }
+    }
+
+
+    /**
+     * P2 usecase 2 :
+     * Người tổ chức sẽ có thể tải ảnh lên
+     */
+    public Map upload(MultipartFile file) {
+        try {
+            return cloudinary.uploader().upload(file.getBytes(), Map.of());
+        } catch (IOException io) {
+            throw new FileUploadException("Failed to upload image", io);
+        }
+    }
+
+
 }

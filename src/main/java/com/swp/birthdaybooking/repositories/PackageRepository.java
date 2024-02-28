@@ -12,11 +12,11 @@ import java.util.List;
 public interface PackageRepository extends JpaRepository<Package, Integer> {
 
     @Query("""
-    select sop from
-    Package pack 
-    left join ServiceOfPackage sop on pack.packageId = sop.servicePackage.packageId
-    left join ServiceBirthday sb on sb.serviceId = sop.serviceBirthday.serviceId
-    where pack.status = true and sb.status = true
-""")
+                select sop from
+                Package pack 
+                left join ServiceOfPackage sop on pack.packageId = sop.servicePackage.packageId
+                left join ServiceBirthday sb on sb.serviceId = sop.serviceBirthday.serviceId
+                where pack.status = true and sb.status = true
+            """)
     public List<ServiceOfPackage> getPartiesOption();
 }
