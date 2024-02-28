@@ -1,11 +1,13 @@
 package com.swp.birthdaybooking.services;
 
 import com.cloudinary.Cloudinary;
+import com.swp.birthdaybooking.Dtos.Request.PackageRequest;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
 import com.swp.birthdaybooking.entities.Package;
 import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.exception.FileUploadException;
+import com.swp.birthdaybooking.mapper.PackageMapper;
 import com.swp.birthdaybooking.repositories.PackageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,13 @@ import java.util.Optional;
 @Service
 public class PackageService {
     private final PackageRepository packageRepository;
-    private final Cloudinary cloudinary; 
+    private final Cloudinary cloudinary;
+    private final PackageMapper packageMapper;
 
-    public PackageService(PackageRepository packageRepository, Cloudinary cloudinary) {
+    public PackageService(PackageRepository packageRepository, Cloudinary cloudinary, PackageMapper packageMapper) {
         this.packageRepository = packageRepository;
         this.cloudinary = cloudinary;
+        this.packageMapper = packageMapper;
     }
 
     public ResponseEntity<ResponseObject> getParitiesOption() {
@@ -66,17 +70,17 @@ public class PackageService {
         return packageRepository.findById(id);
     }
 
-    public Package createPackage(Package aPackage) {
-        return packageRepository.save(aPackage);
+    public Package createPackage(PackageRequest packageRequest) {
+        return packageRepository.save(packageMapper.rqToEntity(packageRequest));
     }
 
-    public Package updatePackage(int id, Package aPackage) {
+    public Package updatePackage(int id, PackageRequest packageRequest) {
         var packageOptional = packageRepository.findById(id);
         if (packageOptional.isEmpty()) {
             return null;
         }
-        aPackage.setPackageId(id);
-        return packageRepository.save(aPackage);
+        packageRequest.setPackageId(id);
+        return packageRepository.save(packageMapper.rqToEntity(packageRequest));
     }
 
     public void deletePackage(int id) {
@@ -85,7 +89,6 @@ public class PackageService {
             packageRepository.deleteById(id);
         }
     }
-
 
     /**
      * P2 usecase 2 :
