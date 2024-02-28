@@ -2,13 +2,11 @@ package com.swp.birthdaybooking.services;
 
 import com.cloudinary.Cloudinary;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
+import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
 import com.swp.birthdaybooking.entities.Package;
 import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.exception.FileUploadException;
-import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
-import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.repositories.PackageRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,15 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class PackageService {
     private final PackageRepository packageRepository;
     private final Cloudinary cloudinary; 
-    private final Logger logger = LoggerFactory.getLogger(PackageService.class);
-
 
     public PackageService(PackageRepository packageRepository, Cloudinary cloudinary) {
         this.packageRepository = packageRepository;
