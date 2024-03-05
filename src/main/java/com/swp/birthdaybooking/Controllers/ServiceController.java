@@ -33,4 +33,9 @@ public class ServiceController {
                 .ok(new ResponseObject("Successful", "Image uploaded",
                         serviceBirthdayService.upload(file).get("secure_url")));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getById(@PathVariable Integer id) {
+        return serviceBirthdayService.getServiceDetails(id);
+    }
 }
