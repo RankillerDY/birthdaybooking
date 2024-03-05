@@ -48,4 +48,8 @@ public class ServiceBirthday {
 
     @Column(name = "description", length = 250)
     private String description;
+
+    @Column(name = "image_url", length = 250)
+    private String imageUrl;
+
 }

@@ -23,4 +23,11 @@ public class FeedBackController {
     public ResponseEntity<ResponseObject> updateFeature(@RequestBody UpdateFeedBackRequest obj) {
         return feedbackService.updateFeedback(obj);
     }
+
+    @GetMapping
+    public ResponseEntity<ResponseObject> getByServiceId(int serviceId) {
+        return ResponseEntity
+                .ok(new ResponseObject("Successful", "Feedback retrieved",
+                        feedbackService.getByServiceId(serviceId)));
+    }
 }

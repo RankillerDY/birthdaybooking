@@ -10,9 +10,15 @@ import com.swp.birthdaybooking.repositories.ServiceBirthdayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.swp.birthdaybooking.entities.Feedback;
+import com.swp.birthdaybooking.exception.NotFoundException;
+import com.swp.birthdaybooking.repositories.FeedbackRepository;
+import com.swp.birthdaybooking.repositories.ServiceBirthdayRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +63,16 @@ public class FeedbackService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Feedback haven't been updated", null));
         }
+    }
+    /**
+     * View feedback
+     */
+    public List<Feedback> getByServiceId(int serviceId) {
+        var isServiceExist = serviceBirthdayRepository.existsById(serviceId);
+        if(!isServiceExist) throw new NotFoundException("Can not found service with id: " + serviceId + "!");
+
+        var feedbacks = feedbackRepository
+                .findAllByServiceId(serviceId);
+        return feedbacks.orElseGet(List::of);
     }
 }

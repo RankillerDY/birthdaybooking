@@ -3,41 +3,52 @@ package com.swp.birthdaybooking.services;
 
 import com.cloudinary.Cloudinary;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
+import com.swp.birthdaybooking.Dtos.Request.CreateServiceRq;
 import com.swp.birthdaybooking.entities.ServiceBirthday;
-import com.swp.birthdaybooking.repositories.LocationRepository;
+import com.swp.birthdaybooking.exception.FileUploadException;
+import com.swp.birthdaybooking.mapper.ServiceMapper;
 import com.swp.birthdaybooking.repositories.ServiceBirthdayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
+@Transactional
 public class ServiceBirthdayService {
-    private final ServiceBirthdayRepository repository;
+    private final ServiceBirthdayRepository serviceRepo;
+    private final PackageService packageService;
+    private final ServiceMapper serviceMapper;
+    private final Cloudinary cloudinary;
+
 
     /**
      * P2 usecase 3 : đặt giá cho các dịch vụ của họ.
      */
     public ServiceBirthday setPriceForService(int id, float price) {
-        ServiceBirthday serviceBirthday = repository.findById(id).orElse(null);
+        ServiceBirthday serviceBirthday = serviceRepo.findById(id).orElse(null);
         if (serviceBirthday != null) {
             serviceBirthday.setPrice(price);
-            return repository.save(serviceBirthday);
+            var service = serviceRepo.save(serviceBirthday);
+            packageService.resetPricePackage(service.getServiceId());
+            return service;
         }
         return null;
     }
 
     public ResponseEntity<ResponseObject> getServiceDetails(int id) {
         try {
-            ServiceBirthday serviceBirthday = repository.findById(id).orElse(null);
+            ServiceBirthday serviceBirthday = serviceRepo.findById(id).orElse(null);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Success", "Retrieve service", serviceBirthday));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Failed", "Fail to retrieve service", null));
@@ -57,5 +68,22 @@ public class ServiceBirthdayService {
                 .location(serviceBirthday.getLocation())
                 .build();
         return serviceBirthday1;
+    }
+
+    public ServiceBirthday createService(CreateServiceRq createServiceRq) {
+        var serviceBirthday = serviceMapper.mapToService(createServiceRq);
+        return serviceRepo.save(serviceBirthday);
+    }
+
+    /**
+     * P2 usecase 2 :
+     * Người tổ chức sẽ có thể tải ảnh lên
+     */
+    public Map upload(MultipartFile file) {
+        try {
+            return cloudinary.uploader().upload(file.getBytes(), Map.of());
+        } catch (IOException io) {
+            throw new FileUploadException("Failed to upload image", io);
+        }
     }
 }

@@ -4,34 +4,39 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
-@Entity
+@Entity()
 @Table(name = "Guest")
 @Getter
 @Builder
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Guest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "guest_id")
-    private int guestId;
+    private Integer guestId;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private Account account;
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
     @JsonManagedReference
+    @ToString.Exclude
     private List<Cart> cartList;
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
     @JsonManagedReference
+    @ToString.Exclude
     private List<Feedback> feedbackList;
 
     @Column(name = "phone", length = 250)

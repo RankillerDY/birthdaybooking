@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class PackageRequest {
     private Integer packageId;
     private String name;
-    private boolean status;
-    private float price;
+    private Boolean status;
+    private Float price;
     private String description;
+    private Integer locationId;
 }

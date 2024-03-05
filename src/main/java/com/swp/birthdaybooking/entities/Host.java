@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@DynamicUpdate
 public class Host {
 
     @Id
@@ -42,5 +44,9 @@ public class Host {
 
     @Column(name = "phone", length = 250, nullable = false)
     private String phone;
+
+    public Host(int hostId) {
+        this.hostId = hostId;
+    }
 }
 

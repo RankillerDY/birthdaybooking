@@ -49,10 +49,4 @@ public class PackageController {
                         packageService.updatePackage(id, packageRequest)));
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseObject> uploadImage(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity
-                .ok(new ResponseObject("Successful", "Found packages",
-                        packageService.upload(file)));
-    }
 }
