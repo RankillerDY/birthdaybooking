@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.DELETE;
+
 @AllArgsConstructor
 @Configuration
 public class SecurityConfig {
@@ -27,8 +30,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
 //                                .requestMatchers("/api/v1/auth/**")
                         .requestMatchers(
-                                "/**",
-                                "/api/v1/auth/**",
+                                "/api/v1/authenticate/register",
+                                "/api/v1/authenticate/login",
                                 "/v2/api-docs",
                                 "v3/api-docs",
                                 "v3/api-docs/**",

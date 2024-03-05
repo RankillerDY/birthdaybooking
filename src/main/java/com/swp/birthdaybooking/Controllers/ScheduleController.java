@@ -6,6 +6,7 @@ import com.swp.birthdaybooking.entities.Schedule;
 import com.swp.birthdaybooking.services.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class ScheduleController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('host:read')")
     public ResponseEntity<ResponseObject> getSchedule() {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Schedules retrieved",
@@ -28,6 +30,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('host:read')")
     public ResponseEntity<ResponseObject> getScheduleById(@PathVariable Integer id) {
         log.info("Schedule id: " + id);
         return ResponseEntity
@@ -36,6 +39,7 @@ public class ScheduleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('host:create')")
     public ResponseEntity<ResponseObject> createSchedule(@RequestBody CreateScheduleRq schedule) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Schedule created",
@@ -43,6 +47,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('host:update')")
     public ResponseEntity<ResponseObject> updateSchedule(@RequestBody CreateScheduleRq schedule, @PathVariable Integer id) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Schedule updated",
@@ -50,6 +55,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('host:delete')")
     public ResponseEntity<ResponseObject> deleteSchedule(@PathVariable Integer id) {
         scheduleService.deleteSchedule(id);
         return ResponseEntity

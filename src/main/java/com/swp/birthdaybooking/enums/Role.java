@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public enum Role {
+    UNAUTHORIZEGUEST(Set.of()),
     USER(Set.of(
             Permission.USER_READ,
             Permission.USER_CREATE,
@@ -25,9 +26,25 @@ public enum Role {
             Permission.HOST_CREATE,
             Permission.HOST_UPDATE,
             Permission.HOST_DELETE
+    )),
+
+    ADMIN(Set.of(
+            Permission.USER_READ,
+            Permission.USER_CREATE,
+            Permission.USER_UPDATE,
+            Permission.USER_DELETE,
+            Permission.HOST_READ,
+            Permission.HOST_CREATE,
+            Permission.HOST_UPDATE,
+            Permission.HOST_DELETE,
+            Permission.ADMIN_READ,
+            Permission.ADMIN_CREATE,
+            Permission.ADMIN_UPDATE,
+            Permission.ADMIN_DELETE
     ));
 
-    @Getter private final Set<Permission> permission;
+    @Getter
+    private final Set<Permission> permission;
 
     public List<SimpleGrantedAuthority> getAuthorities() {
         System.out.println(getPermission());

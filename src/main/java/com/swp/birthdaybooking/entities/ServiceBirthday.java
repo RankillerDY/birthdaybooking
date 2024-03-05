@@ -40,9 +40,6 @@ public class ServiceBirthday {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "pictureUrl")
-    private String picture;
-
     @Column(name = "price")
     private float price;
 
