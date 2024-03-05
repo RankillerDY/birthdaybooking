@@ -2,6 +2,7 @@ package com.swp.birthdaybooking.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.swp.birthdaybooking.enums.Role;
 import jakarta.persistence.*;
@@ -51,6 +52,7 @@ public class Account implements UserDetails {
     private List<Host> hostList;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
     }

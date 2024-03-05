@@ -18,6 +18,6 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
                 left join ServiceBirthday sb on sb.serviceId = sop.serviceBirthday.serviceId
                 where pack.status = true and sb.status = true
             """)
-    public List<ServiceOfPackage> getPartiesOption();
+    List<ServiceOfPackage> getPartiesOption();
 
 }

@@ -3,10 +3,7 @@ package com.swp.birthdaybooking.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Host {
 
@@ -38,6 +36,9 @@ public class Host {
 
     @Column(name = "name", length = 50)
     private String name;
+
+    @Column(name = "gender", length = 50)
+    private String gender;
 
     @Column(name = "phone", length = 250, nullable = false)
     private String phone;

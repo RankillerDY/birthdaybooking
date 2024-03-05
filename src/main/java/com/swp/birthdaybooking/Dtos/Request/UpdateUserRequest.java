@@ -1,16 +1,17 @@
 package com.swp.birthdaybooking.Dtos.Request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-    private String email;
-    private String password;
-    private String phone;
+public class UpdateUserRequest {
+    private Integer personId;
     private String name;
     private String gender;
+    private String phone;
 }

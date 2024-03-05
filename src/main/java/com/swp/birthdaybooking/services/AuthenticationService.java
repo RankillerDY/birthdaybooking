@@ -3,14 +3,10 @@ package com.swp.birthdaybooking.services;
 import com.swp.birthdaybooking.Dtos.Request.LoginRequest;
 import com.swp.birthdaybooking.Dtos.Request.RegisterRequest;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
-import com.swp.birthdaybooking.entities.Account;
-import com.swp.birthdaybooking.entities.Location;
-import com.swp.birthdaybooking.entities.Tokens;
+import com.swp.birthdaybooking.entities.*;
 import com.swp.birthdaybooking.enums.Role;
 import com.swp.birthdaybooking.enums.TokenType;
-import com.swp.birthdaybooking.repositories.AccountRepository;
-import com.swp.birthdaybooking.repositories.LocationRepository;
-import com.swp.birthdaybooking.repositories.TokensRepository;
+import com.swp.birthdaybooking.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +25,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final TokensRepository tokensRepo;
+    private final GuestRepository guestRepository;
+    private final HostRepository hostRepository;
     private final LocationRepository locationRepository;
     private final AccountRepository accountRepository;
 
@@ -48,12 +46,54 @@ public class AuthenticationService {
                     .role(Role.USER)
                     .status(true)
                     .build();
-
-
             var savedUser = accountRepository.save(account);
+
+            Guest guest = Guest.builder()
+                    .phone(dto.getPhone())
+                    .gender(dto.getGender())
+                    .name(dto.getName())
+                    .account(savedUser)
+                    .build();
+
+            var savedGuest = guestRepository.save(guest);
             var jwtToken = jwtService.generateToken(account);
             SavedUserToken(jwtToken, savedUser);
             return ResponseEntity.ok().body(new ResponseObject("Successful", "Created",jwtToken));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Register failed", null));
+        }
+
+    }
+
+    public ResponseEntity<ResponseObject> registerForHost(RegisterRequest dto) {
+        try {
+            Account emailChecker = accountRepository.findByEmail(dto.getEmail()).orElse(null);
+            if(!isValidEmail(dto.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Email is invalid", null));
+            }
+            if(emailChecker != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Email is already exist", null));
+            }
+
+            Account account = Account.builder()
+                    .email(dto.getEmail())
+                    .password(passwordEncoder.encode(dto.getPassword()))
+                    .role(Role.HOST)
+                    .status(true)
+                    .build();
+            var savedUser = accountRepository.save(account);
+
+            Host host = Host.builder()
+                    .phone(dto.getPhone())
+                    .gender(dto.getGender())
+                    .name(dto.getName())
+                    .account(account)
+                    .build();
+
+            hostRepository.save(host);
+            var jwtToken = jwtService.generateToken(account);
+            SavedUserToken(jwtToken, savedUser);
+            return ResponseEntity.ok().body(new ResponseObject("Successful", "Created", host));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Register failed", null));
         }

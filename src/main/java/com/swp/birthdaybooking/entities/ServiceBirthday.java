@@ -3,10 +3,7 @@ package com.swp.birthdaybooking.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
 @Table(name = "Service")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServiceBirthday {
@@ -24,7 +22,7 @@ public class ServiceBirthday {
     private int serviceId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     private Location location;
 
@@ -41,6 +39,9 @@ public class ServiceBirthday {
 
     @Column(name = "status")
     private boolean status;
+
+    @Column(name = "pictureUrl")
+    private String picture;
 
     @Column(name = "price")
     private float price;

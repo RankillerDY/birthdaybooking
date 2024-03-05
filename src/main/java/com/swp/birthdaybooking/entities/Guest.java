@@ -22,7 +22,7 @@ public class Guest {
     private int guestId;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private Account account;
 

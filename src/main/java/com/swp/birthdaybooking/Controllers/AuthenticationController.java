@@ -24,6 +24,13 @@ public class AuthenticationController {
         return services.register(request);
     }
 
+    @PostMapping("/register/host")
+    public ResponseEntity<ResponseObject> registerForHost(
+            @RequestBody RegisterRequest request
+    ) {
+        return services.registerForHost(request);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(
             @RequestBody LoginRequest request

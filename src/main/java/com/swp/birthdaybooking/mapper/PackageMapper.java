@@ -2,7 +2,7 @@ package com.swp.birthdaybooking.mapper;
 
 import com.swp.birthdaybooking.Dtos.Request.PackageRequest;
 import com.swp.birthdaybooking.entities.Package;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface PackageMapper {

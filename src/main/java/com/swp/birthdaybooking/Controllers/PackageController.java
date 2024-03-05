@@ -16,7 +16,7 @@ public class PackageController {
     private final PackageService packageService;
 
     @GetMapping("/parties")
-    public ResponseEntity<ResponseObject> register() {
+    public ResponseEntity<ResponseObject> getParties() {
         return packageService.getParitiesOption();
     }
 
