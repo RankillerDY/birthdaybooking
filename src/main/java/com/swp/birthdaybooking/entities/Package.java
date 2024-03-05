@@ -25,7 +25,7 @@ public class Package {
     private int packageId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     private Location location;
 

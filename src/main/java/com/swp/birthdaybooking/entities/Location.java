@@ -1,6 +1,7 @@
 package com.swp.birthdaybooking.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,11 +28,11 @@ public class Location {
     private Host host;
 
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Package> packageList;
 
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private List<ServiceBirthday> serviceBirthdays;
 
     @Column(name = "address", length = 250)
