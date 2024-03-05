@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/guest")
+@RequestMapping("api/v1/host")
 public class HostController {
 
     private final HostService hostService;

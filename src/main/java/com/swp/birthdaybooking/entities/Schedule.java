@@ -21,15 +21,19 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Schedule_id")
-    private int scheduleId;
+    private Integer scheduleId;
 
     @Column(name = "date")
     private Date date;
 
     @Column(name = "busy")
-    private boolean busy;
+    private Boolean busy;
 
     @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<ScheduleDetail> scheduleDetailList;
+
+    public Schedule(int scheduleId) {
+        this.scheduleId = scheduleId;
+    }
 }

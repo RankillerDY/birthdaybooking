@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GuestRq {
-    private int guestId;
+    private Integer guestId;
     private String phone;
     private String name;
     private String gender;

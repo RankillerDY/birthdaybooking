@@ -1,2 +1,6 @@
-package com.swp.birthdaybooking.Dtos.Request;public record CreateScheduleRq() {
+package com.swp.birthdaybooking.Dtos.Request;
+
+import java.util.Date;
+
+public record CreateScheduleRq(Date date, Boolean busy){
 }

@@ -20,7 +20,7 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "location_id")
-    private int locationId;
+    private Integer locationId;
 
     @ManyToOne
     @JsonBackReference
@@ -40,4 +40,8 @@ public class Location {
 
     @Column(name = "name", length = 250)
     private String name;
+
+    public Location(Integer locationId) {
+        this.locationId = locationId;
+    }
 }

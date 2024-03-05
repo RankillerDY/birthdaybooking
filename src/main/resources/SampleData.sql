@@ -45,3 +45,5 @@ INSERT INTO Service (service_id, location_id, name, price, description) VALUES
 (3, 1, 'Trang trí hoa', 1500.00, 'Các bài trí hoa đẹp mắt cho trang trí');
 
 
+ALTER TABLE Service
+    ADD COLUMN image_url VARCHAR(1000);

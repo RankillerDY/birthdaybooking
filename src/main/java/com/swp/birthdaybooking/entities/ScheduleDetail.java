@@ -2,23 +2,20 @@ package com.swp.birthdaybooking.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "Schedule_Detail")
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class ScheduleDetail {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "schedule_Detail_id")
-    private int scheduleDetailId;
+    private Integer scheduleDetailId;
 
     @ManyToOne
     @JsonBackReference

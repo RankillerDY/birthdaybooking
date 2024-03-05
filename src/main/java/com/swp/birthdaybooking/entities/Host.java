@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class Host {
 
     @Id
@@ -41,5 +43,9 @@ public class Host {
 
     @Column(name = "phone", length = 250, nullable = false)
     private String phone;
+
+    public Host(int hostId) {
+        this.hostId = hostId;
+    }
 }
 

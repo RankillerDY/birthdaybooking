@@ -21,10 +21,10 @@ public class GuestController {
 
     @PostMapping
     public ResponseEntity<ResponseObject> editProfile(@RequestBody GuestRq guestRq) {
-
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Guest profile updated",
-                        guestService.editProfile(guestRq)));
+                        guestService.editProfile(guestRq)
+                ));
 
     }
 }
