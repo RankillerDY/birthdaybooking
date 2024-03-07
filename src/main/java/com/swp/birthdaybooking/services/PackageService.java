@@ -3,9 +3,11 @@ package com.swp.birthdaybooking.services;
 import com.swp.birthdaybooking.Dtos.Request.PackageRequest;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
+import com.swp.birthdaybooking.entities.Cart;
 import com.swp.birthdaybooking.entities.Package;
 import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.mapper.PackageMapper;
+import com.swp.birthdaybooking.repositories.LocationRepository;
 import com.swp.birthdaybooking.repositories.PackageRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,13 @@ import java.util.List;
 public class PackageService extends BaseService<Package, Integer> {
     private final PackageRepository packageRepository;
     private final PackageMapper packageMapper;
+    private final LocationRepository locationRepository;
 
-    public PackageService(PackageRepository packageRepository, PackageMapper packageMapper) {
+    public PackageService(PackageRepository packageRepository, PackageMapper packageMapper, LocationRepository locationRepository) {
         super(packageRepository);
         this.packageRepository = packageRepository;
         this.packageMapper = packageMapper;
+        this.locationRepository = locationRepository;
     }
 
     public void resetPricePackage(int serviceId) {
@@ -73,13 +77,31 @@ public class PackageService extends BaseService<Package, Integer> {
     }
 
     public Package createPackage(PackageRequest packageRequest) {
-        return packageRepository.save(packageMapper.mapToPackage(packageRequest));
+        var location = locationRepository.findById(packageRequest.getLocationId()).orElse(null);
+        if (location != null ) {
+            Package packageObj = Package.builder()
+                    .description(packageRequest.getDescription())
+                    .name(packageRequest.getName())
+                    .price(packageRequest.getPrice())
+                    .location(location)
+                    .status(true)
+                    .build();
+            return packageRepository.save(packageObj);
+        }
+        return null;
     }
 
     public Package updatePackage(int id, PackageRequest packageRequest) {
-        var result = getById(id);
-        packageMapper.mapToPackage(packageRequest, result);
-        return packageRepository.save(result);
+        var packageObj = packageRepository.findById(id).orElse(null);
+        var location = locationRepository.findById(packageRequest.getLocationId()).orElse(null);
+        if (location != null && packageObj != null) {
+            packageObj.setPrice(packageRequest.getPrice());
+            packageObj.setDescription(packageRequest.getDescription());
+            packageObj.setLocation(location);
+            packageObj.setName(packageRequest.getName());
+            return packageRepository.save(packageObj);
+        }
+        return null;
     }
 
     public void deletePackage(int id) {

@@ -36,4 +36,7 @@ public class Feedback {
 
     @Column(name = "feedback_date")
     private Date feedbackDate;
+
+    @Column(name = "edit_feedback_date")
+    private Date updatedDate;
 }

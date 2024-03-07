@@ -13,6 +13,4 @@ public class CreateFeedBackRequest {
     private Integer serviceId;
     private Integer guestId;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date feedbackDate;
 }

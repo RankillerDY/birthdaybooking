@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackageRequest {
-    private Integer packageId;
     private String name;
-    private Boolean status;
     private Float price;
     private String description;
     private Integer locationId;

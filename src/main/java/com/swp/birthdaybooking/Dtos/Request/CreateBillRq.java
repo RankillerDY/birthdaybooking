@@ -1,4 +1,14 @@
 package com.swp.birthdaybooking.Dtos.Request;
 
-public record CreateBillRq(Integer guestId, Integer cartId, String paymentMethod) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreateBillRq {
+    private Integer guestId;
+    private Integer cartId;
+    private String paymentMethod;
 }

@@ -30,7 +30,7 @@ public class BillService {
 
     public Bill createBill(CreateBillRq billRq) {
         // get packages from cart
-        var cart = cartService.getCartById(billRq.cartId());
+        var cart = cartService.getCartById(billRq.getCartId());
         var prices = packageRepository.getTotalPricesServiceByPackageId(cart.getCartId());
         var billSaved = Bill.builder().cart(cart).build();
         billRepository.save(billSaved);
@@ -39,13 +39,14 @@ public class BillService {
                 .paymentDate(new Date())
                 .paymentTime(new Date())
                 .bill(billSaved)
-                .method(billRq.paymentMethod())
+                .method(billRq.getPaymentMethod())
                 .build();
         paymentRepository.save(payment);
 
         var billDetail = BillDetail.builder()
                 .totalPrice(prices.floatValue())
                 .bill(billSaved)
+                .guest(cart.getGuest())
                 .build();
 
         billDetailRepository.save(billDetail);

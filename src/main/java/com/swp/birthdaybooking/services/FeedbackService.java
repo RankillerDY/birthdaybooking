@@ -29,15 +29,12 @@ public class FeedbackService {
 
     public ResponseEntity<ResponseObject> createFeedback(CreateFeedBackRequest obj) {
         try {
-            if (obj.getFeedbackDate().before(new Date())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Failed", "Date cannot be before today", null));
-            }
             Feedback feedback = Feedback.builder()
-                    .feedbackDate(obj.getFeedbackDate())
                     .guest(guestRepository.findById(obj.getGuestId()).orElse(null))
                     .serviceBirthday(serviceBirthdayRepository.findByServiceId(obj.getServiceId()).orElse(null))
                     .description(obj.getDescription())
-                    .feedbackDate(obj.getFeedbackDate())
+                    .feedbackDate(new Date())
+                    .updatedDate(new Date())
                     .build();
 
             Feedback savedFeedback = feedbackRepository.save(feedback);
@@ -57,6 +54,7 @@ public class FeedbackService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseObject("Failed", "Couldn't find feedback", null));
             }
             feedback.setDescription(obj.getDescription());
+            feedback.setUpdatedDate(new Date());
             Feedback savedFeedback = feedbackRepository.save(feedback);
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Success", "Feedback have been updated", savedFeedback));

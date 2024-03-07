@@ -44,7 +44,6 @@ public class PackageController {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Found packages",
                         packageService.createPackage(packageRequest)));
-
     }
 
     @PutMapping("/{id}")
