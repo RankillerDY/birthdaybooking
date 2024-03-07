@@ -42,11 +42,15 @@ public class Package {
     private String name;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "price")
-    private float price;
+    private Float price;
 
     @Column(name = "description", length = 250)
     private String description;
+
+    public Package(int packageId) {
+        this.packageId = packageId;
+    }
 }

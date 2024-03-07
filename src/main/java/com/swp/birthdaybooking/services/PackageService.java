@@ -27,13 +27,13 @@ public class PackageService extends BaseService<Package, Integer> {
 
     public void resetPricePackage(int serviceId) {
         var packageOptional = packageRepository.findAllByServiceId(serviceId);
-        packageOptional.ifPresent(packages -> {
-            packages.forEach(pack -> {
-                var totalPrice = packageRepository.getTotalPricesServiceByPackageId(pack.getPackageId());
-                pack.setPrice(totalPrice);
-                packageRepository.save(pack);
-            });
-        });
+        packageOptional.ifPresent(packages ->
+                packages.forEach(pack -> {
+                            var totalPrice = packageRepository.getTotalPricesServiceByPackageId(pack.getPackageId());
+                            pack.setPrice(totalPrice.floatValue());
+                            packageRepository.save(pack);
+                        }
+                ));
     }
 
     public ResponseEntity<ResponseObject> getParitiesOption() {

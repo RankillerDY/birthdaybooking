@@ -3,10 +3,7 @@ package com.swp.birthdaybooking.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,12 +13,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Bill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bill_id")
-    private int billId;
+    private Integer billId;
 
     @ManyToOne
     @JsonBackReference

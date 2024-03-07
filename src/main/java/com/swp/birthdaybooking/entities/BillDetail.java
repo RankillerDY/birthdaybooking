@@ -2,10 +2,7 @@ package com.swp.birthdaybooking.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "Bill_Detail")
@@ -13,12 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BillDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bill_detail_id")
-    private int billDetailId;
+    private Integer billDetailId;
 
     @ManyToOne
     @JsonBackReference
@@ -31,5 +29,5 @@ public class BillDetail {
     private Guest guest;
 
     @Column(name = "total_price")
-    private float totalPrice;
+    private Float totalPrice;
 }

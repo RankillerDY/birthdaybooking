@@ -47,5 +47,9 @@ public class Guest {
 
     @Column(name = "gender", length = 250)
     private String gender;
+
+    public Guest(Integer guestId) {
+        this.guestId = guestId;
+    }
 }
 

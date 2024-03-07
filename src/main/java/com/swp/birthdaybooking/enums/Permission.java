@@ -12,8 +12,7 @@ public enum Permission {
     HOST_READ("leader:read"),
     HOST_UPDATE("leader:update"),
     HOST_CREATE("leader:create"),
-    HOST_DELETE("leader:delete")
-    ;
+    HOST_DELETE("leader:delete");
 
     @Getter
     private final String permission;

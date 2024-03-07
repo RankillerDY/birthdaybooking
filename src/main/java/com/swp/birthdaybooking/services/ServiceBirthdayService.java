@@ -8,7 +8,7 @@ import com.swp.birthdaybooking.entities.ServiceBirthday;
 import com.swp.birthdaybooking.exception.FileUploadException;
 import com.swp.birthdaybooking.mapper.ServiceMapper;
 import com.swp.birthdaybooking.repositories.ServiceBirthdayRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -21,22 +21,29 @@ import java.util.Map;
 
 
 
-@RequiredArgsConstructor
 @Service
 @Slf4j
 @Transactional
-public class ServiceBirthdayService {
+public class ServiceBirthdayService extends BaseService<ServiceBirthday,Integer>{
     private final ServiceBirthdayRepository serviceRepo;
     private final PackageService packageService;
     private final ServiceMapper serviceMapper;
     private final Cloudinary cloudinary;
+
+    public ServiceBirthdayService(JpaRepository<ServiceBirthday, Integer> repository, ServiceBirthdayRepository serviceRepo, PackageService packageService, ServiceMapper serviceMapper, Cloudinary cloudinary) {
+        super(repository);
+        this.serviceRepo = serviceRepo;
+        this.packageService = packageService;
+        this.serviceMapper = serviceMapper;
+        this.cloudinary = cloudinary;
+    }
 
 
     /**
      * P2 usecase 3 : đặt giá cho các dịch vụ của họ.
      */
     public ServiceBirthday setPriceForService(int id, float price) {
-        ServiceBirthday serviceBirthday = serviceRepo.findById(id).orElse(null);
+        var serviceBirthday = getById(id);
         if (serviceBirthday != null) {
             serviceBirthday.setPrice(price);
             var service = serviceRepo.save(serviceBirthday);
