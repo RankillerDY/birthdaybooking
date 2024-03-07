@@ -69,7 +69,7 @@ public class ServiceBirthdayService extends BaseService<ServiceBirthday,Integer>
                 .serviceId(serviceBirthday.getServiceId())
                 .serviceDetailList(serviceBirthday.getServiceDetailList())
                 .feedbackList(serviceBirthday.getFeedbackList())
-                .picture(serviceBirthday.getPicture())
+                .imageUrl(serviceBirthday.getImageUrl())
                 .price(serviceBirthday.getPrice())
                 .status(serviceBirthday.isStatus())
                 .location(serviceBirthday.getLocation())

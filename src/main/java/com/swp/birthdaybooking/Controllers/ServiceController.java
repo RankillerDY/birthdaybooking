@@ -5,6 +5,7 @@ import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.services.ServiceBirthdayService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ public class ServiceController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('host:create')")
     public ResponseEntity<ResponseObject> createService(@RequestBody CreateServiceRq createServiceRq) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Service created",
@@ -28,6 +30,7 @@ public class ServiceController {
             value = "/uploads",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
+    @PreAuthorize("hasAuthority('host:create')")
     public ResponseEntity<ResponseObject> uploadImage(@RequestParam("file") MultipartFile file) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Image uploaded",
@@ -35,6 +38,7 @@ public class ServiceController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('host:read')")
     public ResponseEntity<ResponseObject> getById(@PathVariable Integer id) {
         return serviceBirthdayService.getServiceDetails(id);
     }

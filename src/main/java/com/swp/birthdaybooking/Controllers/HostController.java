@@ -4,6 +4,7 @@ import com.swp.birthdaybooking.Dtos.Request.HostRq;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.services.HostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class HostController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('host:update')")
     public ResponseEntity<ResponseObject> editProfile(@RequestBody HostRq hostRq) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Host profile updated",
