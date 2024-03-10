@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -17,13 +16,11 @@ public class PackageController {
     private final PackageService packageService;
 
     @GetMapping("/parties")
-    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<ResponseObject> getParties() {
         return packageService.getParitiesOption();
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<ResponseObject> getPackages() {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Found packages",
@@ -31,7 +28,6 @@ public class PackageController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<ResponseObject> getPackageById(@PathVariable int id) {
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Found packages",

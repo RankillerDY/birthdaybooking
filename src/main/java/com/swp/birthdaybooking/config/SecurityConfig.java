@@ -43,7 +43,11 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/swagger-ui/**",
                                 "/vnpay-payment",
-                                "/vnpay-payment/**"
+                                "/vnpay-payment/**",
+                                "/api/v1/package",
+                                "/api/v1/package/**",
+                                "/api/v1/service",
+                                "/api/v1/service/**"
                         )
                         .permitAll()
                         .anyRequest()

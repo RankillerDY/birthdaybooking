@@ -18,6 +18,11 @@ public class ServiceController {
         this.serviceBirthdayService = serviceBirthdayService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getById(@PathVariable Integer id) {
+        return serviceBirthdayService.getServiceDetails(id);
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('host:create')")
     public ResponseEntity<ResponseObject> createService(@RequestBody CreateServiceRq createServiceRq) {
@@ -37,9 +42,4 @@ public class ServiceController {
                         serviceBirthdayService.upload(file).get("secure_url")));
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('host:read')")
-    public ResponseEntity<ResponseObject> getById(@PathVariable Integer id) {
-        return serviceBirthdayService.getServiceDetails(id);
-    }
 }
