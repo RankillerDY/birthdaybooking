@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
@@ -23,13 +24,15 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "http://localhost:8080",
                         description = "Local server"
                 )
-        }
+        },
+        security = @SecurityRequirement(name = "authorization")
+
 )
 @SecurityScheme(
-        name="bearerAuth",
+        name="authorization",
         description = "JWT Token auth",
-        scheme = "bearer",
-        type = SecuritySchemeType.APIKEY,
+        scheme = "Bearer",
+        type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )

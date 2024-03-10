@@ -41,12 +41,13 @@ public class SecurityConfig {
                                 "/configuration/security",
                                 "/swagger-ui.html",
                                 "/webjars/**",
-                                "/swagger-ui/**"
+                                "/swagger-ui/**",
+                                "/vnpay-payment",
+                                "/vnpay-payment/**"
                         )
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

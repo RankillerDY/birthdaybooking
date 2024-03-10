@@ -24,7 +24,7 @@ VALUES (2, 2, '456 Đường DEF, Thành phố XYZ', 'Khách Sạn Phượng Ho�
 
 INSERT INTO Location (location_id, host_id, address, name)
 VALUES (3, 3, '789 Đường GHI, Thành phố XYZ', 'Quán Cà Phê Sương Sương');
-   
+
 INSERT INTO Package (package_id, location_id, name, price, description)
 VALUES (1, 1, 'Gói Tiệc Cưới Cơ Bản', 5000, 'Gói tiệc cưới bao gồm không gian trang trí cơ bản và dịch vụ ăn uống');
 
@@ -32,18 +32,28 @@ INSERT INTO Package (package_id, location_id, name, price, description)
 VALUES (2, 2, 'Gói Tiệc Cưới Luxury', 10000, 'Gói tiệc cưới cao cấp với trang trí sang trọng và dịch vụ hoàn hảo');
 
 INSERT INTO Package (package_id, location_id, name, price, description)
-VALUES (3, 3, 'Gói Tiệc Cưới Truyền Thống', 3000, 'Gói tiệc cưới theo phong cách truyền thống với không gian ấm cúng và lễ hội vui vẻ');
+VALUES (3, 3, 'Gói Tiệc Cưới Truyền Thống', 3000,
+        'Gói tiệc cưới theo phong cách truyền thống với không gian ấm cúng và lễ hội vui vẻ');
 
 
-INSERT INTO Service (service_id, location_id, name, price, description) VALUES
-(1, 1, 'Cho thuê địa điểm', 3000.00, 'Cho thuê địa điểm tổ chức lễ cưới và tiệc tiếp khách');
+INSERT INTO Service (service_id, location_id, name, price, description)
+VALUES (1, 1, 'Cho thuê địa điểm', 3000.00, 'Cho thuê địa điểm tổ chức lễ cưới và tiệc tiếp khách');
 
-INSERT INTO Service (service_id, location_id, name, price, description) VALUES
-(2, 1, 'Dịch vụ tiệc', 5000.00, 'Dịch vụ ẩm thực đầy đủ cho buổi tiệc cưới');
+INSERT INTO Service (service_id, location_id, name, price, description)
+VALUES (2, 1, 'Dịch vụ tiệc', 5000.00, 'Dịch vụ ẩm thực đầy đủ cho buổi tiệc cưới');
 
-INSERT INTO Service (service_id, location_id, name, price, description) VALUES
-(3, 1, 'Trang trí hoa', 1500.00, 'Các bài trí hoa đẹp mắt cho trang trí');
+INSERT INTO Service (service_id, location_id, name, price, description)
+VALUES (3, 1, 'Trang trí hoa', 1500.00, 'Các bài trí hoa đẹp mắt cho trang trí');
 
 
 ALTER TABLE Service
     ADD COLUMN image_url VARCHAR(1000);
+
+-- Insert a bill
+INSERT INTO Bill (bill_id)
+VALUES (1);
+
+-- Insert bill details
+INSERT INTO bill_detail (bill_id, guest_id, total_price)
+VALUES (1, 1, 100.0),
+       (1, 1, 200.0);
