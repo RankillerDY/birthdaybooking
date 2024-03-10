@@ -14,18 +14,20 @@ import java.util.*;
 @Service
 public class VnPayService {
     private final BillDetailRepository billDetailRepository;
+    private final VnPayConfig vnPayConfig;
 
-    public VnPayService(BillDetailRepository billDetailRepository) {
+    public VnPayService(BillDetailRepository billDetailRepository, VnPayConfig vnPayConfig) {
         this.billDetailRepository = billDetailRepository;
+        this.vnPayConfig = vnPayConfig;
     }
 
     public String createOrder(Integer billId, String urlReturn, String vnp_IpAddr) {
         Long total = billDetailRepository.getTotalPriceByBillId(billId);
 
-        var vnp_Version = VnPayConfig.vnp_Version;
-        var vnp_Command = VnPayConfig.vnp_Command;
-        var vnp_TxnRef = VnPayConfig.getRandomNumber(8);
-        var vnp_TmnCode = VnPayConfig.vnp_TmnCode;
+        var vnp_Version = vnPayConfig.vnp_Version;
+        var vnp_Command = vnPayConfig.vnp_Command;
+        var vnp_TxnRef = vnPayConfig.getRandomNumber(8);
+        var vnp_TmnCode = vnPayConfig.vnp_TmnCode;
         var orderType = "order-type";
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -77,9 +79,9 @@ public class VnPayService {
             }
         }
         var queryUrl = query.toString();
-        var vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
+        var vnp_SecureHash = vnPayConfig.hmacSHA512(vnPayConfig.vnp_HashSecret, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        var paymentUrl = VnPayConfig.vnp_PayUrl + "?" + queryUrl;
+        var paymentUrl = vnPayConfig.vnp_PayUrl + "?" + queryUrl;
         return paymentUrl;
     }
 
@@ -106,7 +108,7 @@ public class VnPayService {
         if (fields.containsKey("vnp_SecureHash")) {
             fields.remove("vnp_SecureHash");
         }
-        String signValue = VnPayConfig.hashAllFields(fields);
+        String signValue = vnPayConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                 return 1;

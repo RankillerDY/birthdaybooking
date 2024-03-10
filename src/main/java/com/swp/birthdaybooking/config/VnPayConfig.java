@@ -15,19 +15,19 @@ import java.util.*;
 @Component
 public class VnPayConfig {
     @Value("${vnpay.payUrl}")
-    public static String vnp_PayUrl;
+    public String vnp_PayUrl;
     @Value("${vnpay.tmnCode}")
-    public static String vnp_TmnCode;
+    public String vnp_TmnCode;
     @Value("${vnpay.hashSecret}")
-    public static String vnp_HashSecret;
+    public String vnp_HashSecret;
     @Value("${vnpay.apiUrl}")
-    public static String vnp_apiUrl;
+    public String vnp_apiUrl;
     @Value("${vnpay.version}")
-    public static String vnp_Version;
+    public String vnp_Version;
     @Value("${vnpay.command}")
-    public static String vnp_Command;
+    public String vnp_Command;
 
-    public static String md5(String message) {
+    public String md5(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -45,7 +45,7 @@ public class VnPayConfig {
         return digest;
     }
 
-    public static String Sha256(String message) {
+    public String Sha256(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -63,7 +63,7 @@ public class VnPayConfig {
         return digest;
     }
 
-    public static String hashAllFields(Map fields) {
+    public String hashAllFields(Map fields) {
         List fieldNames = new ArrayList<>(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();
@@ -80,10 +80,10 @@ public class VnPayConfig {
                 sb.append("&");
             }
         }
-        return hmacSHA512(vnp_HashSecret,sb.toString());
+        return hmacSHA512(vnp_HashSecret, sb.toString());
     }
 
-    public static String hmacSHA512(final String key, final String data) {
+    public String hmacSHA512(final String key, final String data) {
         try {
 
             if (key == null || data == null) {
@@ -106,7 +106,7 @@ public class VnPayConfig {
         }
     }
 
-    public static String getIpAddress(HttpServletRequest request) {
+    public String getIpAddress(HttpServletRequest request) {
         String ipAdress;
         try {
             ipAdress = request.getHeader("X-FORWARDED-FOR");
@@ -119,7 +119,7 @@ public class VnPayConfig {
         return ipAdress;
     }
 
-    public static String getRandomNumber(int len) {
+    public String getRandomNumber(int len) {
         Random rnd = new Random();
         String chars = "0123456789";
         StringBuilder sb = new StringBuilder(len);

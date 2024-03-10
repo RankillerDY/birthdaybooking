@@ -17,9 +17,11 @@ public class PaymentController {
     private final VnPayService vnPayService;
     @Value("${payment.return-url}")
     private String paymentReturnUrl;
+    private final VnPayConfig vnPayConfig;
 
-    public PaymentController(VnPayService vnPayService) {
+    public PaymentController(VnPayService vnPayService, VnPayConfig vnPayConfig) {
         this.vnPayService = vnPayService;
+        this.vnPayConfig = vnPayConfig;
     }
 
     @PostMapping("")
@@ -27,12 +29,24 @@ public class PaymentController {
 
         return ResponseEntity
                 .ok(new ResponseObject("Successful", "Payment successful",
-                        vnPayService.createOrder(billId, paymentReturnUrl, VnPayConfig.getIpAddress(req))));
+                        vnPayService.createOrder(billId, paymentReturnUrl, vnPayConfig.getIpAddress(req))));
     }
 
     @GetMapping("/vnpay-payment")
-    public ResponseEntity<?> getResult(@RequestParam(name = "vnp_TransactionStatus") String vnpTransactionStatus) {
-        return vnpTransactionStatus.equals("00") ?
+    public ResponseEntity<?> getResult(HttpServletRequest request,
+                                       @RequestParam("vnp_Amount") Long vnp_Amount,
+                                       @RequestParam("vnp_BankCode") String vnp_BankCode,
+                                       @RequestParam("vnp_BankTranNo") String vnp_BankTranNo,
+                                       @RequestParam("vnp_CardType") String vnp_CardType,
+                                       @RequestParam("vnp_OrderInfo") String vnp_OrderInfo,
+                                       @RequestParam("vnp_PayDate") String vnp_PayDate,
+                                       @RequestParam("vnp_ResponseCode") String vnp_ResponseCode,
+                                       @RequestParam("vnp_TmnCode") String vnp_TmnCode,
+                                       @RequestParam("vnp_TransactionNo") String vnp_TransactionNo,
+                                       @RequestParam("vnp_TransactionStatus") String vnp_TransactionStatus,
+                                       @RequestParam("vnp_TxnRef") String vnp_TxnRef,
+                                       @RequestParam("vnp_SecureHash") String vnp_SecureHash) {
+        return vnp_TransactionStatus.equals("00") ?
                 ResponseEntity.ok(new ResponseObject("Successful", "Payment successful", null)) :
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseObject("Failed", "Payment processing error", null));
     }
