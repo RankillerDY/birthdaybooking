@@ -59,7 +59,7 @@ public class VnPayService {
         while (itr.hasNext()) {
             String fieldName = (String) itr.next();
             String fieldValue = (String) vnpParams.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+            if ((fieldValue != null) && (!fieldValue.isEmpty())) {
                 //Build hash data
                 hashData.append(fieldName);
                 hashData.append('=');
@@ -81,8 +81,7 @@ public class VnPayService {
         var queryUrl = query.toString();
         var vnp_SecureHash = vnPayConfig.hmacSHA512(vnPayConfig.vnp_HashSecret, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        var paymentUrl = vnPayConfig.vnp_PayUrl + "?" + queryUrl;
-        return paymentUrl;
+        return vnPayConfig.vnp_PayUrl + "?" + queryUrl;
     }
 
     public int orderReturn(HttpServletRequest request) {

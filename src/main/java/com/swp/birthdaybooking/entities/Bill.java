@@ -29,4 +29,8 @@ public class Bill {
     @OneToMany(mappedBy = "bill", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<BillDetail> billDetailList;
+
+    public Bill(Integer billId) {
+        this.billId = billId;
+    }
 }
