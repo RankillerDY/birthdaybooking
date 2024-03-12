@@ -1,14 +1,15 @@
 package com.swp.birthdaybooking.services;
 
 import com.swp.birthdaybooking.Dtos.Request.PackageRequest;
+import com.swp.birthdaybooking.Dtos.Response.PackageResponse;
 import com.swp.birthdaybooking.Dtos.Response.ResponseObject;
 import com.swp.birthdaybooking.Dtos.ServiceOfPackageObj;
-import com.swp.birthdaybooking.entities.Cart;
 import com.swp.birthdaybooking.entities.Package;
 import com.swp.birthdaybooking.entities.ServiceOfPackage;
 import com.swp.birthdaybooking.mapper.PackageMapper;
 import com.swp.birthdaybooking.repositories.LocationRepository;
 import com.swp.birthdaybooking.repositories.PackageRepository;
+import com.swp.birthdaybooking.repositories.ServiceBirthdayRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,14 @@ public class PackageService extends BaseService<Package, Integer> {
     private final PackageRepository packageRepository;
     private final PackageMapper packageMapper;
     private final LocationRepository locationRepository;
+    private final ServiceBirthdayRepository serviceBirthdayRepository;
 
-    public PackageService(PackageRepository packageRepository, PackageMapper packageMapper, LocationRepository locationRepository) {
+    public PackageService(PackageRepository packageRepository, PackageMapper packageMapper, LocationRepository locationRepository, ServiceBirthdayRepository serviceBirthdayRepository) {
         super(packageRepository);
         this.packageRepository = packageRepository;
         this.packageMapper = packageMapper;
         this.locationRepository = locationRepository;
+        this.serviceBirthdayRepository = serviceBirthdayRepository;
     }
 
     public void resetPricePackage(int serviceId) {
@@ -72,13 +75,27 @@ public class PackageService extends BaseService<Package, Integer> {
         return packageRepository.findAll();
     }
 
+    public List<PackageResponse> getPackagesAndServices() {
+        return packageRepository.findAll().stream().map(apack ->
+                new PackageResponse(
+                        apack.getPackageId(),
+                        apack.getName(),
+                        apack.getStatus(),
+                        apack.getDescription(),
+                        apack.getPrice(),
+                        apack.getLocation(),
+                        serviceBirthdayRepository.findAllByPackageId(apack.getPackageId())
+                )
+        ).toList();
+    }
+
     public Package getPackageById(int id) {
         return getById(id);
     }
 
     public Package createPackage(PackageRequest packageRequest) {
         var location = locationRepository.findById(packageRequest.getLocationId()).orElse(null);
-        if (location != null ) {
+        if (location != null) {
             Package packageObj = Package.builder()
                     .description(packageRequest.getDescription())
                     .name(packageRequest.getName())

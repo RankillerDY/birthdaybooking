@@ -27,6 +27,13 @@ public class PackageController {
                         packageService.getPackages()));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ResponseObject> getPackagesAndServices() {
+        return ResponseEntity
+                .ok(new ResponseObject("Successful", "Found packages",
+                        packageService.getPackagesAndServices()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getPackageById(@PathVariable int id) {
         return ResponseEntity

@@ -38,7 +38,7 @@ public class ServiceBirthday {
     private String name;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "price")
     private float price;

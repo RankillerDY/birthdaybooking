@@ -23,6 +23,14 @@ public class ServiceController {
         return serviceBirthdayService.getServiceDetails(id);
     }
 
+
+    @GetMapping("/package/{id}")
+    public ResponseEntity<ResponseObject> getByPacakageId(@PathVariable Integer id) {
+        return ResponseEntity
+                .ok(new ResponseObject("Successful", "Get all successful",
+                        serviceBirthdayService.getAllByPackageId(id)));
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('host:create')")
     public ResponseEntity<ResponseObject> createService(@RequestBody CreateServiceRq createServiceRq) {

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,7 +38,6 @@ public class ServiceBirthdayService extends BaseService<ServiceBirthday,Integer>
         this.serviceMapper = serviceMapper;
         this.cloudinary = cloudinary;
     }
-
 
     /**
      * P2 usecase 3 : đặt giá cho các dịch vụ của họ.
@@ -71,7 +71,7 @@ public class ServiceBirthdayService extends BaseService<ServiceBirthday,Integer>
                 .feedbackList(serviceBirthday.getFeedbackList())
                 .imageUrl(serviceBirthday.getImageUrl())
                 .price(serviceBirthday.getPrice())
-                .status(serviceBirthday.isStatus())
+                .status(serviceBirthday.getStatus())
                 .location(serviceBirthday.getLocation())
                 .build();
         return serviceBirthday1;
@@ -92,5 +92,9 @@ public class ServiceBirthdayService extends BaseService<ServiceBirthday,Integer>
         } catch (IOException io) {
             throw new FileUploadException("Failed to upload image", io);
         }
+    }
+
+    public List<ServiceBirthday> getAllByPackageId(Integer packageId){
+        return serviceRepo.findAllByPackageId(packageId);
     }
 }
